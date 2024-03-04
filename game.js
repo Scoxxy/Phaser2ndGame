@@ -3,12 +3,11 @@ var config = { //Налаштовуємо сцену
     width: 5000,
     height: 1080,
     pixelArt: true,
-    debug: true,
     physics: { //Налаштовуємо фізику
         default: 'arcade',
         arcade: {
             gravity: { y: 300 },
-            debug: true
+            debug: false
         }
     },
     scene: {
@@ -22,7 +21,7 @@ var game = new Phaser.Game(config);
 
 var score = 0;
 var scoreText;
-
+var worldWidth = 20000;
 var record = 0
 
 //Функція підбору зірок
@@ -87,6 +86,7 @@ function preload () //Завантажуємо графіку для гри
         { frameWidth: 32, frameHeight: 32 }
     );
 }
+const WORLD_WIDTH = 4000;
 
 
 function create ()
@@ -147,12 +147,18 @@ function create ()
     //Додано колізії між гравцем та платформами
     this.physics.add.collider(player, platforms);
 
-    this.cameras.main.setBounds(0, 0, 5000, 1080); // Встановлюємо межі камери на всю ширину та висоту сцени
-this.cameras.main.startFollow(player);
+    //Camera
+    this.cameras.main.setBounds(0, 0, 9600, 1080);
+    this.physics.world.setBounds(0, 0, 9600, window.innerHeight);
+    this.cameras.main.startFollow(player);
+
+    //this.cameras.main.setBounds(0, 0, 5000, 1080); // Встановлюємо межі камери на всю ширину та висоту сцени
+    //this.cameras.main.startFollow(player);
 }
 
 function update ()
 {
+
     //Керування персонажем
     if (cursors.left.isDown)
     {
