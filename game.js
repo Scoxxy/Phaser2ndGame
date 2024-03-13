@@ -1,12 +1,13 @@
 var config = { //Налаштовуємо сцену
     type: Phaser.AUTO,
-    worldWidth: 9600,
+    width: 1920,
     height: 1080,
     pixelArt: true,
     physics: { //Налаштовуємо фізику
         default: 'arcade',
         arcade: {
             gravity: { y: 300 },
+
         }
     },
     scene: {
@@ -21,10 +22,13 @@ var player;
 var platform;
 var score = 0;
 var scoreText;
-var worldWidth = config.worldWidth * 2;
+var worldWidth = config.width * 5;
 var star;
 var alien;
 var spaceship;
+var playerSpeed = 350;
+var jumpHeight = 400; 
+
 
 var record = 0
 
@@ -148,7 +152,7 @@ function create ()
     this.anims.create({
         key: 'right',
         frames: this.anims.generateFrameNumbers('dude', { start: 5, end: 8 }),
-        frameRate: 10,
+        frameRate: 100,
         repeat: -1
     });
 
@@ -163,15 +167,15 @@ function create ()
 
 function update ()
 {
-    //Керування персонажем
+    // Керування персонажем
     if (cursors.left.isDown)
     {
-        player.setVelocityX(-160);
+        player.setVelocityX(-playerSpeed);
         player.anims.play('left', true);
     }
     else if (cursors.right.isDown)
     {
-        player.setVelocityX(160);
+        player.setVelocityX(playerSpeed);
         player.anims.play('right', true);
     }
     else
@@ -182,6 +186,7 @@ function update ()
 
     if (cursors.up.isDown && player.body.touching.down)
     {
-        player.setVelocityY(-330);
+        player.setVelocityY(-jumpHeight);
     }
+    
 }
