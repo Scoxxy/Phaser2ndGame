@@ -3,12 +3,10 @@ var config = { //Налаштовуємо сцену
     worldWidth: 9600,
     height: 1080,
     pixelArt: true,
-    debug: true,
     physics: { //Налаштовуємо фізику
         default: 'arcade',
         arcade: {
             gravity: { y: 300 },
-            debug: true
         }
     },
     scene: {
