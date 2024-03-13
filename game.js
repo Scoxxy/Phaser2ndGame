@@ -34,7 +34,7 @@ function preload () //Завантажуємо графіку для гри
 {
     this.load.image('platform', 'assets/platform.png');
     this.load.image('spaceship', 'assets/spaceship.png');
-    this.load.image('alien', 'assets/alien.png');
+    this.load.image('alien', 'assets/cheese.png');
     this.load.image('star', 'assets/mountain.png');
     this.load.image('ground', 'assets/ground.png');
     this.load.image('fon+', 'assets/fon+.png');
@@ -72,9 +72,20 @@ function create ()
     spaceship = this.physics.add.group();
 
     //Створюемо платформи
-    for (var x = 0; x < worldWidth; x = x + 400){
-        console.log(x);
-        platforms.create(x, 1080, 'ground').setOrigin(0, 0).refreshBody().setDepth(1);
+    for (var x = 0; x < worldWidth; x = x + 1000){
+        platforms
+            .create(x,Phaser.Math.Between(600,750), 'platform')
+            .setOrigin(0, 0)
+            .refreshBody()
+            .setDepth(1);
+    }
+
+    for (var x = 0; x < worldWidth; x = x + 1200){
+        platforms
+            .create(x,Phaser.Math.Between(500,550), 'platform')
+            .setOrigin(0, 0)
+            .refreshBody()
+            .setDepth(1);
     }
 
     for (let i = 0; i < 5; i++) {
@@ -83,15 +94,15 @@ function create ()
     //Створюємо об'єкти декорації
     for (let x = 0; x < worldWidth; x += Phaser.Math.FloatBetween(750, 1250)) {
         star.create(x, 700, 'star')
-            .setOrigin(0.5, 0.5)
+            .setOrigin(0.5, 0)
             .setScale(Phaser.Math.FloatBetween(0.5, 3.5))
-            .setDepth(0);
+            .setDepth(0.5);
     }
 
     for (let x = 0; x < worldWidth; x += Phaser.Math.FloatBetween(1500, 2000)) {
         alien.create(x, 180, 'alien')
             .setOrigin(1, 0)
-            .setScale(Phaser.Math.FloatBetween(0.1, 0.3))
+            .setScale(1)
             .setDepth(Phaser.Math.Between(1,10));
     }
 
