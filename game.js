@@ -7,7 +7,7 @@ var config = { //Налаштовуємо сцену
         default: 'arcade',
         arcade: {
             gravity: { y: 300 },
-
+            debug: true
         }
     },
     scene: {
@@ -26,8 +26,9 @@ var worldWidth = config.width * 5;
 var star;
 var alien;
 var spaceship;
-var playerSpeed = 350;
-var jumpHeight = 400; 
+var playerSpeed = 300;
+var jumpHeight = 450; 
+var kiwi
 
 
 var record = 0
@@ -37,6 +38,7 @@ function preload () //Завантажуємо графіку для гри
     this.load.image('platform', 'assets/platform.png');
     this.load.image('spaceship', 'assets/spaceship.png');
     this.load.image('alien', 'assets/cheese.png');
+    this.load.image('bomb', 'assets/bomb.png');
     this.load.image('star', 'assets/mountain.png');
     this.load.image('ground', 'assets/ground.png');
     this.load.image('fon+', 'assets/fon+.png');
@@ -53,7 +55,25 @@ function preload () //Завантажуємо графіку для гри
 
 function create ()
 {
+    kiwi = this.physics.add.group({ 
+        key: 'alien', 
+        repeat: 100, 
+        setXY: { x: 0, y: 0, stepX: 120 } 
+ 
+    }); 
+ 
+    kiwi.children.iterate(function (child) { 
+        child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8)); 
+    });
 
+    bombs = this.physics.add.group(); 
+ 
+    var bomb = bombs.create(x, 16, 'bomb'); 
+    bomb.setBounce(1); 
+    bomb.setCollideWorldBounds(true); 
+    bomb.setVelocity(Phaser.Math.Between(-200, 200), 20); 
+    bomb.allowGravity = false;
+    
     //Додаемо небо
 
     this.add.tileSprite(0, 0, worldWidth, 1080, "fon+")
@@ -102,7 +122,7 @@ function create ()
     }
 
     for (let x = 0; x < worldWidth; x += Phaser.Math.FloatBetween(1500, 2000)) {
-        alien.create(x, 180, 'alien')
+        alien.create(x, 180, 'aliemn')
             .setOrigin(1, 0)
             .setScale(1)
             .setDepth(Phaser.Math.Between(1,10));
@@ -152,7 +172,7 @@ function create ()
     this.anims.create({
         key: 'right',
         frames: this.anims.generateFrameNumbers('dude', { start: 5, end: 8 }),
-        frameRate: 100,
+        frameRate: 10,
         repeat: -1
     });
 
@@ -161,7 +181,19 @@ function create ()
     this.physics.add.collider(star, platforms);
     this.physics.add.collider(alien, platforms);
     this.physics.add.collider(spaceship, platforms);
+    this.physics.add.collider(kiwi , platforms);
+    this.physics.add.ovelap(kiwi, player ,collectKiwi, null,this);
 
+    kiwi = this.physics.add.group({ 
+        key: 'alien', 
+        repeat: 100, 
+        setXY: { x: 0, y: 0, stepX: 120 } 
+ 
+    }); 
+ 
+    kiwi.children.iterate(function (child) { 
+        child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8)); 
+    });
 }
 
 
@@ -189,4 +221,19 @@ function update ()
         player.setVelocityY(-jumpHeight);
     }
     
+
+}
+
+function collectKiwi(player, kiwi) { 
+    kiwi.disableBody(true, true); 
+    score += 10; 
+    scoreText.setText('Score: ' + score); 
+ 
+    var x = (player.x < 400) ? Phaser.Math.Between(400, 800) : Phaser.Math.Between(0, 400);  
+  
+    var bomb = bombs.create(x, 16, 'bomb');  
+    bomb.setBounce(1);  
+    bomb.setCollideWorldBounds(true);  
+    bomb.setVelocity(Phaser.Math.Between(-200, 200), 20);  
+    bomb.allowGravity = false;
 }
