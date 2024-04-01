@@ -97,10 +97,10 @@ function create() {
 
     //Створюємо об'єкти декорації
     for (let x = 0; x < worldWidth; x += Phaser.Math.FloatBetween(750, 1250)) {
-        star.create(x, 180, 'star')
-            .setOrigin(0.4, 0.4)
+        star.create(x, 700, 'star')
+            .setOrigin(0.5, 0)
             .setScale(Phaser.Math.FloatBetween(0.5, 3.5))
-            .setDepth(Phaser.Math.Between(1, 10));
+            .setDepth(0.5);
     }
 
     for (let x = 0; x < worldWidth; x += Phaser.Math.FloatBetween(1500, 2000)) {
